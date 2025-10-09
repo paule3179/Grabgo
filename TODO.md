@@ -1,0 +1,9 @@
+- [x] Add mongoose require statement in app.js
+- [x] Test the MongoDB connection by running the app
+- [x] Verify if MongoDB is running locally
+- [x] Fix multer upload destination path from '/tmp/my-uploads' to './uploads'
+- [x] Create uploads directory
+- [x] Refactor foodController to use MongoDB queries instead of static data arrays
+- [x] Add missing methods in foodController: getItemsByCategoryId and addItemToCategory
+- [x] Set default MongoDB connection string
+- [x] Start the server and verify it runs without errors

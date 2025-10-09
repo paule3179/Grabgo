@@ -1,0 +1,37 @@
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: 'dnac2xtzl',
+    secure: true,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// __dirname workaround for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const vegSpringRollsjpg = await cloudinary.uploader.upload("public/images/vegetable-spring-rolls.jpg");
+console.log('Uploaded with relative path:', vegSpringRollsjpg);
+ 
+const url = cloudinary.url(vegSpringRollsjpg.public_id, {
+    quality: "auto",
+    fetch_format: "auto",
+},
+{
+width: 200,
+height: 200,
+crop: "fill"
+},
+{
+    secure: true, // Ensure the URL is HTTPS
+    gravity: "auto"
+}
+);
+
+console.log('Transformed URL:', url);
