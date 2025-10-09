@@ -1,0 +1,29 @@
+{
+  "name": "mobile-api",
+  "version": "1.0.0",
+  "description": "API for mobile app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cloudinary": "^2.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "keywords": [
+    "api",
+    "mobile",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC"
+}
