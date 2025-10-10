@@ -7,3 +7,9 @@
 - [x] Add missing methods in foodController: getItemsByCategoryId and addItemToCategory
 - [x] Set default MongoDB connection string
 - [x] Start the server and verify it runs without errors
+- [x] Create Booking model for managing bookings
+- [x] Create bookingController with CRUD operations
+- [x] Create bookings routes
+- [x] Add bookings routes to app.js
+- [x] Create calendar.html page with FullCalendar to display bookings
+- [x] Test the calendar page by accessing /calendar.html

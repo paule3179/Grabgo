@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Category = require('../models/FoodCategory');
 const FoodItem = require('../models/FoodItem');
+const User = require('../models/user');
 
 const connectionString = process.env.CONNECTION_STRING || 'mongodb://localhost:27017/grabgo';
 
@@ -12,6 +13,7 @@ const seedData = async () => {
     // Clear existing data
     await Category.deleteMany({});
     await FoodItem.deleteMany({});
+    await User.deleteMany({});
 
     // Create sample categories
     const categories = [
@@ -34,6 +36,27 @@ const seedData = async () => {
       await category.save();
     }
 
+    // Create sample users
+    const users = [
+      {
+        username: 'john_doe',
+        email: 'john@example.com',
+        password: 'password123'
+      },
+      {
+        username: 'jane_smith',
+        email: 'jane@example.com',
+        password: 'password123'
+      }
+    ];
+
+    const savedUsers = [];
+    for (const userData of users) {
+      const user = new User(userData);
+      await user.save();
+      savedUsers.push(user);
+    }
+
     // Create sample food items
     const items = [
       {
@@ -43,7 +66,9 @@ const seedData = async () => {
         image: 'sampleOne.jpg',
         images: ['sampleOne.jpg'],
         brand: 'Samira Foods',
-        price: 12.0,
+        price_cedis: 12.0,
+        sellerName: 'Samira Foods',
+        sellerId: 1,
         countInStock: 50,
         rating: 4.5,
         numReviews: 10,
@@ -56,7 +81,9 @@ const seedData = async () => {
         image: 'sampleTwo.jpg',
         images: ['sampleTwo.jpg'],
         brand: 'Samira Foods',
-        price: 10.0,
+        price_cedis: 10.0,
+        sellerName: 'Samira Foods',
+        sellerId: 1,
         countInStock: 30,
         rating: 4.0,
         numReviews: 8,
@@ -64,12 +91,44 @@ const seedData = async () => {
       }
     ];
 
+    const savedItems = [];
     for (const itemData of items) {
       const item = new FoodItem(itemData);
       await item.save();
+      savedItems.push(item);
     }
 
-    console.log('Seeding completed');
+    // Create sample bookings
+    const Booking = require('../models/Booking');
+    await Booking.deleteMany({});
+
+    const bookings = [
+      {
+        user: savedUsers[0]._id,
+        foodItem: savedItems[0]._id,
+        date: new Date('2023-10-15'),
+        time: '12:00',
+        quantity: 2,
+        status: 'confirmed',
+        notes: 'Pickup at noon'
+      },
+      {
+        user: savedUsers[1]._id,
+        foodItem: savedItems[1]._id,
+        date: new Date('2023-10-16'),
+        time: '18:00',
+        quantity: 1,
+        status: 'pending',
+        notes: 'Delivery please'
+      }
+    ];
+
+    for (const bookingData of bookings) {
+      const booking = new Booking(bookingData);
+      await booking.save();
+    }
+
+  
     process.exit(0);
   } catch (error) {
     console.error('Error seeding data:', error);

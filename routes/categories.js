@@ -6,10 +6,10 @@ const foodController = require('../controllers/foodController');
 router.get('/', (req, res) => {
   foodController.getCategories()
     .then(data => {
-      res.json({ success: true, data });
+      res.json({data });
     })
     .catch(error => {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(500).json({message: error.message });
     });
 });
 
@@ -18,13 +18,13 @@ router.get('/:id', (req, res) => {
   const { id } = req.params;
   foodController.getCategoryById(id)
     .then(data => {
-      res.json({ success: true, data });
+      res.json({data });
     })
     .catch(error => {
       if (error.message === 'Category not found') {
-        res.status(404).json({ success: false, message: error.message });
+        res.status(404).json({message: error.message });
       } else {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({message: error.message });
       }
     });
 });
@@ -34,26 +34,26 @@ router.get('/:id/items', (req, res) => {
   const { id } = req.params;
     foodController.getItemsByCategoryId(id)
     .then(data => {
-        res.json({ success: true, data });
+        res.json({ data });
     })
     .catch(error => {
         if (error.message === 'Category not found') {
-            res.status(404).json({ success: false, message: error.message });
+            res.status(404).json({message: error.message });
         } else {
-            res.status(500).json({ success: false, message: error.message });
+            res.status(500).json({ message: error.message });
         }
     });
 });
-
-// Add other category-related routes here
+ 
+// Create a new category
 router.post('/', (req, res) => {
   const categoryData = req.body;
   foodController.createCategory(categoryData)
     .then(data => {
-      res.status(201).json({ success: true, data });
+      res.status(201).json({ data });
     })
     .catch(error => {
-      res.status(500).json({ success: false, message: error.message });
+      res.status(500).json({message: error.message });
     });
 });
 
@@ -63,13 +63,13 @@ router.post('/:id/items', (req, res) => {
   const itemData = req.body;
   foodController.addItemToCategory(id, itemData)
     .then(data => {
-      res.status(201).json({ success: true, data });
+      res.status(201).json({data });
     })
     .catch(error => {
       if (error.message === 'Category not found') {
-        res.status(404).json({ success: false, message: error.message });
+        res.status(404).json({message: error.message });
       } else {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ message: error.message });
       }
       
     });
