@@ -41,6 +41,19 @@ router.get('/:id', (req, res) => {
     });
 });
 
+// Get food items by seller id
+router.get('/seller/:sellerId', (req, res) => {
+  const { sellerId } = req.params;
+  foodController.getItemsBySellerId(sellerId)
+
+    .then(data => {
+      res.json({ data });
+    })
+    .catch(error => {
+      res.status(500).json({ message: error.message });
+    });
+});
+
 // Update food item by id
 router.put('/:id', (req, res) => {
   const { id } = req.params;

@@ -98,11 +98,11 @@ const seedData = async () => {
       savedItems.push(item);
     }
 
-    // Create sample bookings
-    const Booking = require('../models/Booking');
-    await Booking.deleteMany({});
+    // Create sample orders
+    const Order = require('../models/order');
+    await Order.deleteMany({});
 
-    const bookings = [
+    const orders = [
       {
         user: savedUsers[0]._id,
         foodItem: savedItems[0]._id,
@@ -123,9 +123,9 @@ const seedData = async () => {
       }
     ];
 
-    for (const bookingData of bookings) {
-      const booking = new Booking(bookingData);
-      await booking.save();
+    for (const orderData of orders) {
+      const order = new Order(orderData);
+      await order.save();
     }
 
   

@@ -16,6 +16,10 @@ const userSchema = new Schema({
     phone:{
         type: Number,
     },
+     isPhoneVerified: {
+        type: Boolean,
+        default: false
+    },
     email: {
         type: String,       
         required: true,
@@ -27,6 +31,19 @@ const userSchema = new Schema({
             message: props => `${props.value} is not a valid email!`
         }
     },
+     isEmailVerified: {
+        type: Boolean,
+        default: false
+    },
+
+    DateOfBirth: {
+        type: Date,
+    },
+      profilePicture: {
+    type: String,
+    default: null,
+      message: 'Profile picture must be a valid URL'
+    },
     isAdmin: {
         type: Boolean,
         default: false
@@ -34,8 +51,9 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minlength: 6
+        minlength: 8
     },
+
     role: {
     type: String,
     enum: ['user', 'admin', 'moderator', 'vendor'], 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const foodController = require('../controllers/foodController');
+const Category = require('../models/FoodCategory');
 
 // Get all categories
 router.get('/', (req, res) => {
@@ -73,6 +74,46 @@ router.post('/:id/items', (req, res) => {
       }
       
     });
+});
+
+// Update item in category
+router.put('/:categoryId/items/:itemId', async (req, res) => {
+  try {
+    const { categoryId, itemId } = req.params;
+    const updateData = req.body; 
+
+    const updatedCategory = await Category.findOneAndUpdate(
+      {
+        id: categoryId,
+        "items._id": itemId
+      },
+      
+       {
+        $set: { "items.$.image": updateData.image}  
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!updatedCategory) {
+      return res.status(404).json({ message: 'Category or item not found' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Item updated successfully',
+      data: updatedCategory
+    });
+
+  } catch (error) {
+    if (error.message.includes('not found')) {
+      res.status(404).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
 });
 
  

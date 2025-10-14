@@ -2,6 +2,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import FoodItem from '../models/FoodItem';
 
 dotenv.config();
 
@@ -17,7 +18,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const vegSpringRollsjpg = await cloudinary.uploader.upload("public/images/vegetable-spring-rolls.jpg");
-console.log('Uploaded with relative path:', vegSpringRollsjpg);
+a
+console.log('Uploaded with relative path:', vegSpringRollsjpg.url);
+
+await FoodItem.findByIdAndUpdate(
+    {
+        id: '64b8f3f4f1d2c9a1b2c3d4e5', // Replace with actual FoodItem _
+        image: vegSpringRollsjpg.url
+    }
+)
  
 const url = cloudinary.url(vegSpringRollsjpg.public_id, {
     quality: "auto",

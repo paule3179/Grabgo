@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const bookingController = require('../controllers/bookingController');
+const orderController = require('../controllers/orderController');
 
-// Create a new booking
+// Create a new order
 router.post('/', (req, res) => {
-  const bookingData = req.body;
-  bookingController.createBooking(bookingData)
+  const orderData = req.body;
+  orderController.createOrder(orderData)
     .then(data => {
       res.status(201).json({ data });
     })
@@ -14,9 +14,9 @@ router.post('/', (req, res) => {
     });
 });
 
-// Get all bookings
+// Get all orders
 router.get('/', (req, res) => {
-  bookingController.getBookings()
+  orderController.getOrders()
     .then(data => {
       res.json({ data });
     })
@@ -25,15 +25,15 @@ router.get('/', (req, res) => {
     });
 });
 
-// Get booking by id
+// Get order by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  bookingController.getBookingById(id)
+  orderController.getOrderById(id)
     .then(data => {
       res.json({ data });
     })
     .catch(error => {
-      if (error.message === 'Booking not found') {
+      if (error.message === 'Order not found') {
         res.status(404).json({ message: error.message });
       } else {
         res.status(500).json({ message: error.message });
@@ -41,16 +41,16 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Update booking by id
+// Update order by id
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
-  bookingController.updateBooking(id, updateData)
+  orderController.updateOrder(id, updateData)
     .then(data => {
       res.json({ data });
     })
     .catch(error => {
-      if (error.message === 'Booking not found') {
+      if (error.message === 'Order not found') {
         res.status(404).json({ message: error.message });
       } else {
         res.status(500).json({ message: error.message });
@@ -58,15 +58,15 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// Delete booking by id
+// Delete order by id
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
-  bookingController.deleteBooking(id)
+  orderController.deleteOrder(id)
     .then(data => {
       res.json({ data });
     })
     .catch(error => {
-      if (error.message === 'Booking not found') {
+      if (error.message === 'Order not found') {
         res.status(404).json({ message: error.message });
       } else {
         res.status(500).json({ message: error.message });
@@ -74,10 +74,10 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-// Get bookings by user
+// Get orders by user
 router.get('/user/:userId', (req, res) => {
   const { userId } = req.params;
-  bookingController.getBookingsByUser(userId)
+  orderController.getOrdersByUser(userId)
     .then(data => {
       res.json({ data });
     })
@@ -86,10 +86,10 @@ router.get('/user/:userId', (req, res) => {
     });
 });
 
-// Get bookings by date
+// Get orders by date
 router.get('/date/:date', (req, res) => {
   const { date } = req.params;
-  bookingController.getBookingsByDate(date)
+  orderController.getOrdersByDate(date)
     .then(data => {
       res.json({ data });
     })

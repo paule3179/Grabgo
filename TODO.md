@@ -1,15 +1,6 @@
-- [x] Add mongoose require statement in app.js
-- [x] Test the MongoDB connection by running the app
-- [x] Verify if MongoDB is running locally
-- [x] Fix multer upload destination path from '/tmp/my-uploads' to './uploads'
-- [x] Create uploads directory
-- [x] Refactor foodController to use MongoDB queries instead of static data arrays
-- [x] Add missing methods in foodController: getItemsByCategoryId and addItemToCategory
-- [x] Set default MongoDB connection string
-- [x] Start the server and verify it runs without errors
-- [x] Create Booking model for managing bookings
-- [x] Create bookingController with CRUD operations
-- [x] Create bookings routes
-- [x] Add bookings routes to app.js
-- [x] Create calendar.html page with FullCalendar to display bookings
-- [x] Test the calendar page by accessing /calendar.html
+# TODO: Add PUT Route for User Update Testing
+
+## Steps to Complete
+- [x] Add updateUser function to controllers/userController.js
+- [x] Add PUT /:id route to routes/user.js for updating user profile
+- [ ] Test the new PUT route (e.g., via Postman or curl after resolving port conflict)

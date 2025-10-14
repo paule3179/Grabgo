@@ -12,7 +12,7 @@ mongoose.connect(process.env.CONNECTION_STRING)
 .then(() => console.log('Connected to MongoDB'))
 .catch(err => console.log('MongoDB connection error:', err));
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 8083;
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -38,8 +38,8 @@ app.use('/api/categories', categoryRoutes);
 const foodItemRoutes = require('./routes/foodItems');
 app.use('/api/foodItems', foodItemRoutes);
 
-const bookingRoutes = require('./routes/bookings');
-app.use('/api/bookings', bookingRoutes);
+const orderRoutes = require('./routes/order');
+app.use('/api/orders', orderRoutes);
 
 app.use('/api/users', userRoutes);
 

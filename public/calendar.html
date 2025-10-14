@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookings Calendar</title>
+    <title>Orders Calendar</title>
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
     <style>
@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-    <h1>Bookings Calendar</h1>
+    <h1>Orders Calendar</h1>
     <div id='calendar'></div>
 
     <script>
@@ -28,27 +28,27 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 events: function(fetchInfo, successCallback, failureCallback) {
-                    // Fetch bookings from API
-                    fetch('/api/bookings')
+                    // Fetch orders from API
+                    fetch('/api/orders')
                         .then(response => response.json())
                         .then(data => {
-                            const events = data.data.map(booking => ({
-                                title: `${booking.foodItem.name} - ${booking.user.username}`,
-                                start: new Date(booking.date + 'T' + booking.time),
+                            const events = data.data.map(order => ({
+                                title: `${order.foodItem.name} - ${order.user.username}`,
+                                start: new Date(order.date + 'T' + order.time),
                                 extendedProps: {
-                                    status: booking.status,
-                                    quantity: booking.quantity
+                                    status: order.status,
+                                    quantity: order.quantity
                                 }
                             }));
                             successCallback(events);
                         })
                         .catch(error => {
-                            console.error('Error fetching bookings:', error);
+                            console.error('Error fetching orders:', error);
                             failureCallback(error);
                         });
                 },
                 eventClick: function(info) {
-                    alert(`Booking: ${info.event.title}\nStatus: ${info.event.extendedProps.status}\nQuantity: ${info.event.extendedProps.quantity}`);
+                    alert(`Order: ${info.event.title}\nStatus: ${info.event.extendedProps.status}\nQuantity: ${info.event.extendedProps.quantity}`);
                 }
             });
             calendar.render();
