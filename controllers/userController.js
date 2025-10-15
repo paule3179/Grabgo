@@ -10,7 +10,7 @@ const registerUser = async (userData) => {
 }
 
 
-const loginUser = async (email, password) => {
+const loginUser = async (username, email, password) => {
     const user = await User.findOne({ email });
     if (!user) {
         throw new Error('User not found');
@@ -19,7 +19,7 @@ const loginUser = async (email, password) => {
         user.comparePassword(password, (err, isMatch) => {
             if (err) reject(err);
             if (!isMatch) reject(new Error('Invalid password'));
-            const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user._id, name:user.username, email: user.email }, JWT_SECRET, { expiresIn: '1h' });
             resolve(token);
         });
     });
