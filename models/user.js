@@ -14,11 +14,22 @@ const userSchema = new Schema({
         maxlength: 40
     },
     phone:{
-        type: Number,
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
     },
      isPhoneVerified: {
         type: Boolean,
         default: false
+    },
+    otp: {
+        type: String,
+        default: null
+    },
+    otpExpires: {
+        type: Date,
+        default: null
     },
     email: {
         type: String,       

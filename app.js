@@ -26,6 +26,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
+//middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
