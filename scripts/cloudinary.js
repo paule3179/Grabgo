@@ -7,7 +7,7 @@ import FoodItem from '../models/FoodItem';
 dotenv.config();
 
 cloudinary.config({
-    cloud_name: 'dnac2xtzl',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dnac2xtzl',
     secure: true,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET

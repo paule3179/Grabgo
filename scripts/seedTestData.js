@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Category = require('../models/FoodCategory');
 const FoodItem = require('../models/FoodItem');
 const User = require('../models/user');
+const Restaurant = require('../models/Restaurant');
 
 const connectionString = process.env.CONNECTION_STRING || 'mongodb://localhost:27017/grabgo';
 
@@ -14,6 +15,7 @@ const seedData = async () => {
     await Category.deleteMany({});
     await FoodItem.deleteMany({});
     await User.deleteMany({});
+    await Restaurant.deleteMany({});
 
     // Create sample categories
     const categories = [
@@ -55,6 +57,95 @@ const seedData = async () => {
       const user = new User(userData);
       await user.save();
       savedUsers.push(user);
+    }
+
+    // Create sample restaurants
+    const restaurants = [
+      {
+        name: 'Mama\'s Kitchen',
+        city: 'Accra',
+        food_type: 'Ghanaian • Local Cuisine',
+        description: 'Authentic Ghanaian dishes made with love and fresh ingredients.',
+        image_url: '/images/MamaKitchen.jpg',
+        banner_images: ['/images/MamaKitchen_banner1.jpg', '/images/MamaKitchen_banner2.jpg'],
+        address: '123 Main Street, Accra',
+        latitude: 5.6037,
+        longitude: -0.1870,
+        phone: '+233501234567',
+        email: 'info@mamaskitchen.com',
+        distance: 2.5,
+        average_delivery_time: '25-35 mins',
+        delivery_fee: 5.00,
+        min_order: 20.00,
+        opening_hours: 'Mon-Sun: 7:00 AM - 10:00 PM',
+        is_open: true,
+        payment_methods: ['Cash', 'Mobile Money', 'Card'],
+        rating: 4.5,
+        total_reviews: 128,
+        socials: {
+          instagram: '@mamaskitchen_gh',
+          facebook: 'Mama\'s Kitchen Ghana'
+        }
+      },
+      {
+        name: 'Pizza Palace',
+        city: 'Accra',
+        food_type: 'Italian • Pizza • Fast Food',
+        description: 'Wood-fired pizzas with fresh toppings and authentic Italian flavors.',
+        image_url: '/images/PizzaPalace.jpg',
+        banner_images: ['/images/PizzaPalace_banner1.jpg'],
+        address: '456 Pizza Street, Accra',
+        latitude: 5.6148,
+        longitude: -0.2057,
+        phone: '+233507654321',
+        email: 'orders@pizzapalace.com',
+        distance: 3.2,
+        average_delivery_time: '20-30 mins',
+        delivery_fee: 3.00,
+        min_order: 25.00,
+        opening_hours: 'Mon-Sun: 11:00 AM - 11:00 PM',
+        is_open: true,
+        payment_methods: ['Card', 'Mobile Money'],
+        rating: 4.2,
+        total_reviews: 95,
+        socials: {
+          instagram: '@pizzapalace_gh',
+          facebook: 'Pizza Palace Accra'
+        }
+      },
+      {
+        name: 'Burger Barn',
+        city: 'Tema',
+        food_type: 'American • Burgers • Fast Food',
+        description: 'Juicy burgers, crispy fries, and refreshing drinks.',
+        image_url: '/images/BurgerBarn.jpg',
+        banner_images: ['/images/BurgerBarn_banner1.jpg', '/images/BurgerBarn_banner2.jpg'],
+        address: '789 Burger Avenue, Tema',
+        latitude: 5.6698,
+        longitude: -0.0166,
+        phone: '+233549876543',
+        email: 'hello@burgerbarn.com',
+        distance: 1.8,
+        average_delivery_time: '15-25 mins',
+        delivery_fee: 4.00,
+        min_order: 15.00,
+        opening_hours: 'Mon-Sun: 10:00 AM - 10:00 PM',
+        is_open: true,
+        payment_methods: ['Cash', 'Mobile Money', 'Card'],
+        rating: 4.0,
+        total_reviews: 67,
+        socials: {
+          instagram: '@burgerbarn_gh',
+          facebook: 'Burger Barn Tema'
+        }
+      }
+    ];
+
+    const savedRestaurants = [];
+    for (const restaurantData of restaurants) {
+      const restaurant = new Restaurant(restaurantData);
+      await restaurant.save();
+      savedRestaurants.push(restaurant);
     }
 
     // Create sample food items
@@ -128,7 +219,9 @@ const seedData = async () => {
       await order.save();
     }
 
-  
+    console.log('Seeding completed successfully!');
+    console.log(`Created ${savedRestaurants.length} restaurants, ${savedUsers.length} users, ${savedItems.length} food items, and ${orders.length} orders.`);
+
     process.exit(0);
   } catch (error) {
     console.error('Error seeding data:', error);

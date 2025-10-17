@@ -35,3 +35,12 @@
 - [ ] Handle Cloudinary upload errors gracefully
 - [ ] Clean up temporary uploaded files after Cloudinary upload
 - [ ] Test the profile picture update functionality
+
+# TODO List for Adding Restaurants
+
+## Completed Tasks
+- [x] Create Restaurant model (models/Restaurant.js)
+- [x] Create restaurant controller (controllers/restaurantController.js)
+- [x] Create restaurant routes (routes/restaurants.js)
+- [x] Integrate restaurant routes into app.js
+- [x] Update TODO.md with restaurant tasks
