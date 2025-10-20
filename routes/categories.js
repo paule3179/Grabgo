@@ -58,6 +58,23 @@ router.post('/', (req, res) => {
     });
 });
 
+
+//Get category Count
+router.get('/categories/count', async (req, res) => {
+  try {
+    const totalCategories = await Category.countDocuments();
+    res.json({ 
+      success: true,
+      count: totalCategories 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false,
+      message: error.message
+    });
+  }
+});
+
 //post request to add item to a category
 router.post('/:id/items', (req, res) => {
   const { id } = req.params;
@@ -115,6 +132,23 @@ router.put('/:categoryId/items/:itemId', async (req, res) => {
     }
   }
 });
+
+
+// delete category by id
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedCategory = await Category.find
+      .findOneAndDelete({ id });
+    if (!deletedCategory) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
+    res.json({ message: 'Category deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
  
 

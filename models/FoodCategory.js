@@ -39,6 +39,9 @@ const categorySchema = new mongoose.Schema({
     sellerId: {
       type: Number,
       required: true
+    },
+    categoryCount:{
+      type: Number,
     }
   }]
 });

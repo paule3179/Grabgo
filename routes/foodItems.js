@@ -71,4 +71,19 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// Delete food item by id
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  foodController.deleteItem(id)     
+    .then(() => {
+      res.json({ message: 'Item deleted successfully' });
+    })
+    .catch(error => {
+      if (error.message === 'Item not found') {
+        res.status(404).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: error.message });
+      }
+    });   
+});
 module.exports = router;

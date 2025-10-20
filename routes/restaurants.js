@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// for get all restaurants
+// for geting all restaurants
 router.get('/', (req, res) => {
   restaurantController.getRestaurants()
     .then(data => {
