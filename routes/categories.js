@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const foodController = require('../controllers/foodController');
 const Category = require('../models/FoodCategory');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 // Get all categories
 router.get('/', (req, res) => {
@@ -47,7 +48,7 @@ router.get('/:id/items', (req, res) => {
 });
  
 // Create a new category
-router.post('/', (req, res) => {
+router.post('/', authenticateToken, requireAdmin, (req, res) => {
   const categoryData = req.body;
   foodController.createCategory(categoryData)
     .then(data => {
@@ -76,10 +77,10 @@ router.get('/categories/count', async (req, res) => {
 });
 
 //post request to add item to a category
-router.post('/:id/items', (req, res) => {
+router.post('/:id/items', authenticateToken, requireAdmin, (req, res) => {
   const { id } = req.params;
-  const itemData = req.body;
-  foodController.addItemToCategory(id, itemData)
+  const { itemId } = req.body;
+  foodController.addItemToCategory(id, itemId)
     .then(data => {
       res.status(201).json({data });
     })
@@ -89,7 +90,7 @@ router.post('/:id/items', (req, res) => {
       } else {
         res.status(500).json({ message: error.message });
       }
-      
+
     });
 });
 
@@ -97,22 +98,22 @@ router.post('/:id/items', (req, res) => {
 router.put('/:categoryId/items/:itemId', async (req, res) => {
   try {
     const { categoryId, itemId } = req.params;
-    const updateData = req.body; 
+    const updateData = req.body;
 
     const updatedCategory = await Category.findOneAndUpdate(
       {
         id: categoryId,
-        "items._id": itemId
+        items: itemId
       },
-      
+
        {
-        $set: { "items.$.image": updateData.image}  
+        $set: { "items.$": itemId}
       },
       {
         new: true,
         runValidators: true
       }
-    );
+    ).populate('items');
 
     if (!updatedCategory) {
       return res.status(404).json({ message: 'Category or item not found' });
@@ -135,7 +136,7 @@ router.put('/:categoryId/items/:itemId', async (req, res) => {
 
 
 // delete category by id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const deletedCategory = await Category.find

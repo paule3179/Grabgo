@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const restaurantController = require('../controllers/restaurantController');
+const { authenticateToken, requireAdmin, requireVendor } = require('../middleware/auth');
 
 // for Creating a new restaurant
-router.post('/', (req, res) => {
+router.post('/', authenticateToken, requireVendor, (req, res) => {
   const restaurantData = req.body;
   restaurantController.createRestaurant(restaurantData)
     .then(data => {
@@ -42,7 +43,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Update restaurant by id
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
   restaurantController.updateRestaurant(id, updateData)
@@ -59,7 +60,7 @@ router.put('/:id', (req, res) => {
 });
 
 // Delete restaurant by id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
   restaurantController.deleteRestaurant(id)
     .then(data => {

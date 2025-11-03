@@ -10,39 +10,14 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true
   },
- 
+
   emoji: {
     type: String,
     required: true
   },
   items: [{
-    name: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    price: {
-      type: Number,
-      required: true
-    },
-    sellerName: {
-      type: String,
-      required: true
-    },
-    sellerId: {
-      type: Number,
-      required: true
-    },
-    categoryCount:{
-      type: Number,
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'FoodItem'
   }]
 });
 

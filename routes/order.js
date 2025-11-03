@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/orderController');
+const { authenticateToken } = require('../middleware/auth');
 
 // Create a new order
-router.post('/', (req, res) => {
-  const orderData = req.body;
+router.post('/', authenticateToken, (req, res) => {
+  const orderData = {
+    ...req.body,
+    user: req.user ? req.user._id : null 
+  };
   orderController.createOrder(orderData)
     .then(data => {
       res.status(201).json({ data });

@@ -12,8 +12,29 @@ const foodController = {
     await item.save();
     return item;
   },
+
+  updateItem: async (id, updateData) => {
+    const item = await FoodItem.findByIdAndUpdate(id, updateData, { new: true });
+    if (!item) {
+      throw new Error('Item not found');
+    }
+    return item;
+  },
+
+  getItemsBySellerId: async (sellerId) => {
+    return await FoodItem.find({ sellerId });
+  },
+
+  deleteItem: async (id) => {
+    const item = await FoodItem.findByIdAndDelete(id);
+    if (!item) {
+      throw new Error('Item not found');
+    }
+    return item;
+  },
+
   getCategories: async () => {
-    return await Category.find();
+    return await Category.find().populate('items');
   },
 
   getCategoryById: async (id) => {
@@ -25,19 +46,19 @@ const foodController = {
   },
 
   getItemsByCategoryId: async (id) => {
-    const category = await Category.findOne({ id });
+    const category = await Category.findOne({ id }).populate('items');
     if (!category) {
       throw new Error('Category not found');
     }
     return category.items;
   },
 
-  addItemToCategory: async (id, itemData) => {
+  addItemToCategory: async (id, itemId) => {
     const category = await Category.findOneAndUpdate(
       { id },
-      { $push: { items: itemData } },
+      { $push: { items: itemId } },
       { new: true }
-    );
+    ).populate('items');
     if (!category) {
       throw new Error('Category not found');
     }

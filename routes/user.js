@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const authMiddleware = require('../middleware/auth');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 const multer = require('multer');
 
 const upload = multer({ dest: 'uploads/' });
@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
 });
 
 // For update user by id
-router.put('/:id', authMiddleware, upload.single('profilePicture'), async (req, res) => {
+router.put('/:id', require('../middleware/auth').authenticateToken, upload.single('profilePicture'), async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
@@ -46,7 +46,7 @@ router.put('/:id', authMiddleware, upload.single('profilePicture'), async (req, 
     }
 });
     // Get list of Users
-     router.get('/', async (req, res)=>{
+     router.get('/', authenticateToken, requireAdmin, async (req, res)=>{
         try {
             const users = await userController.getUsers();
             res.json({ data: users });

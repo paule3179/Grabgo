@@ -3,13 +3,13 @@ const Stripe = require('stripe');
 const axios = require('axios');
 require('dotenv').config();
 
-// ✅ Load keys from .env
+//  Load keys from .env
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // For Flutterwave (Mobile Money + Bank Transfer)
 const FLW_SECRET = process.env.FLW_SECRET_KEY;
 
-// 💰 Payment Controller
+// Payment Controller
 const paymentController = {
   // POST /api/payments/checkout
   async checkout(req, res) {
@@ -74,7 +74,7 @@ const paymentController = {
         };
       }
 
-      // 🏦 4. Bank Transfer
+      //  4. Bank Transfer
       else if (method === 'bank_transfer') {
         paymentResponse = {
           status: 'pending',

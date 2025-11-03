@@ -7,7 +7,7 @@ const config = {
     // Example: MongoDB or SQL config
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key'
+    secret: process.env.JWT_SECRET 
   }
 };
 

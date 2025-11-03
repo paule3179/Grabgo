@@ -1,11 +1,11 @@
 // routes/paymentRoutes.js
 const express = require('express');
 const router = express.Router();
-const apiAuth = require('../middleware/apiAuth');
+const { authenticateToken } = require('../middleware/auth');
 const paymentController = require('../controllers/paymentController');
 
-// POST /api/payments/checkout
-router.post('/checkout', paymentController.checkout);
+// POST /api/payments/checkout - requires authentication
+router.post('/checkout', authenticateToken, paymentController.checkout);
 
 module.exports = router;
 

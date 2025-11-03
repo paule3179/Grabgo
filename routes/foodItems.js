@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const foodController = require('../controllers/foodController');
+const { authenticateToken, requireAdmin, requireVendor } = require('../middleware/auth');
 
 // Create a new food item
-router.post('/', (req, res) => {
+router.post('/', authenticateToken, requireVendor, (req, res) => {
   const itemData = req.body;
   foodController.createItem(itemData)
     .then(data => {
@@ -55,7 +56,7 @@ router.get('/seller/:sellerId', (req, res) => {
 });
 
 // Update food item by id
-router.put('/:id', (req, res) => {
+router.put('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
   foodController.updateItem(id, updateData)
@@ -72,9 +73,9 @@ router.put('/:id', (req, res) => {
 });
 
 // Delete food item by id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
-  foodController.deleteItem(id)     
+  foodController.deleteItem(id)
     .then(() => {
       res.json({ message: 'Item deleted successfully' });
     })
@@ -84,6 +85,6 @@ router.delete('/:id', (req, res) => {
       } else {
         res.status(500).json({ message: error.message });
       }
-    });   
+    });
 });
 module.exports = router;
