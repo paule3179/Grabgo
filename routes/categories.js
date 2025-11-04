@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const foodController = require('../controllers/foodController');
+const categoriesController = require('../controllers/categoriesController');
 const Category = require('../models/FoodCategory');
 const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 // Get all categories
 router.get('/', (req, res) => {
-  foodController.getCategories()
+  categoriesController.getCategories()
     .then(data => {
       res.json({data });
     })
@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 // Get category by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  foodController.getCategoryById(id)
+  categoriesController.getCategoryById(id)
     .then(data => {
       res.json({data });
     })
@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
 // Get items by category id
 router.get('/:id/items', (req, res) => {
   const { id } = req.params;
-    foodController.getItemsByCategoryId(id)
+    categoriesController.getItemsByCategoryId(id)
     .then(data => {
         res.json({ data });
     })
@@ -48,9 +48,9 @@ router.get('/:id/items', (req, res) => {
 });
  
 // Create a new category
-router.post('/', authenticateToken, requireAdmin, (req, res) => {
+router.post('/', (req, res) => {
   const categoryData = req.body;
-  foodController.createCategory(categoryData)
+  categoriesController.createCategory(categoryData)
     .then(data => {
       res.status(201).json({ data });
     })
@@ -80,7 +80,7 @@ router.get('/categories/count', async (req, res) => {
 router.post('/:id/items', authenticateToken, requireAdmin, (req, res) => {
   const { id } = req.params;
   const { itemId } = req.body;
-  foodController.addItemToCategory(id, itemId)
+  categoriesController.addItemToCategory(id, itemId)
     .then(data => {
       res.status(201).json({data });
     })
@@ -100,19 +100,10 @@ router.put('/:categoryId/items/:itemId', async (req, res) => {
     const { categoryId, itemId } = req.params;
     const updateData = req.body;
 
-    const updatedCategory = await Category.findOneAndUpdate(
-      {
-        id: categoryId,
-        items: itemId
-      },
-
-       {
-        $set: { "items.$": itemId}
-      },
-      {
-        new: true,
-        runValidators: true
-      }
+    const updatedCategory = await Category.findByIdAndUpdate(
+      categoryId,
+      { $set: { "items.$": itemId } },
+      { new: true, runValidators: true }
     ).populate('items');
 
     if (!updatedCategory) {
@@ -139,8 +130,7 @@ router.put('/:categoryId/items/:itemId', async (req, res) => {
 router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const deletedCategory = await Category.find
-      .findOneAndDelete({ id });
+    const deletedCategory = await Category.findByIdAndDelete(id);
     if (!deletedCategory) {
       return res.status(404).json({ message: 'Category not found' });
     }

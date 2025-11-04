@@ -22,20 +22,6 @@ const foodItemSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  addOns: [{
-    name: {
-      type: String,
-      required: true
-    },
-    price: {
-      type: Number,
-      required: true,
-      min: 0
-    },
-    description: {
-      type: String
-    }
-  }],
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'

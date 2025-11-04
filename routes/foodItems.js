@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const foodController = require('../controllers/foodController');
+const foodItemsController = require('../controllers/foodItemsController');
 const { authenticateToken, requireAdmin, requireVendor } = require('../middleware/auth');
 
 // Create a new food item
-router.post('/', authenticateToken, requireVendor, (req, res) => {
+router.post('/', (req, res) => {
   const itemData = req.body;
-  foodController.createItem(itemData)
+  foodItemsController.createItem(itemData)
     .then(data => {
       res.status(201).json({ data });
     })
@@ -17,7 +17,7 @@ router.post('/', authenticateToken, requireVendor, (req, res) => {
 
 // Get all food items
 router.get('/', (req, res) => {
-  foodController.getItems()
+  foodItemsController.getItems()
     .then(data => {
       res.json({ data });
     })
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 // Get food item by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
-  foodController.getItemById(id)
+  foodItemsController.getItemById(id)
     .then(data => {
       res.json({ data });
     })
@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
 // Get food items by seller id
 router.get('/seller/:sellerId', (req, res) => {
   const { sellerId } = req.params;
-  foodController.getItemsBySellerId(sellerId)
+  foodItemsController.getItemsBySellerId(sellerId)
 
     .then(data => {
       res.json({ data });
@@ -59,7 +59,7 @@ router.get('/seller/:sellerId', (req, res) => {
 router.put('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
-  foodController.updateItem(id, updateData)
+  foodItemsController.updateItem(id, updateData)
     .then(data => {
       res.json({ data });
     })
@@ -75,7 +75,7 @@ router.put('/:id', authenticateToken, requireVendor, (req, res) => {
 // Delete food item by id
 router.delete('/:id', authenticateToken, requireVendor, (req, res) => {
   const { id } = req.params;
-  foodController.deleteItem(id)
+  foodItemsController.deleteItem(id)
     .then(() => {
       res.json({ message: 'Item deleted successfully' });
     })

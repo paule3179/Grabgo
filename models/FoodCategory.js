@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const categorySchema = new mongoose.Schema({
   id: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   categoryName: {
     type: String,
@@ -15,10 +16,10 @@ const categorySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  items: [{
+  items: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'FoodItem'
-  }]
+  }
 });
 
 const Category = mongoose.model("Category", categorySchema);
