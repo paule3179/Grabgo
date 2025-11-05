@@ -15,66 +15,37 @@ router.get('/', (req, res) => {
     });
 });
 
+// Get all categories
+router.get('/', async (req, res) => {
+  categoriesController.getCategories()
+    .then(data => res.json({ data }))
+    .catch(error => res.status(500).json({ message: error.message }));
+});
+
+// Move ABOVE any routes with :id
+router.get('/count', async (req, res) => {
+  try {
+    const totalCategories = await Category.countDocuments();
+    res.json({ success: true, count: totalCategories });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Get category by id
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   categoriesController.getCategoryById(id)
-    .then(data => {
-      res.json({data });
-    })
+    .then(data => res.json({ data }))
     .catch(error => {
       if (error.message === 'Category not found') {
-        res.status(404).json({message: error.message });
+        res.status(404).json({ message: error.message });
       } else {
-        res.status(500).json({message: error.message });
+        res.status(500).json({ message: error.message });
       }
     });
 });
 
-// Get items by category id
-router.get('/:id/items', (req, res) => {
-  const { id } = req.params;
-    categoriesController.getItemsByCategoryId(id)
-    .then(data => {
-        res.json({ data });
-    })
-    .catch(error => {
-        if (error.message === 'Category not found') {
-            res.status(404).json({message: error.message });
-        } else {
-            res.status(500).json({ message: error.message });
-        }
-    });
-});
- 
-// Create a new category
-router.post('/', (req, res) => {
-  const categoryData = req.body;
-  categoriesController.createCategory(categoryData)
-    .then(data => {
-      res.status(201).json({ data });
-    })
-    .catch(error => {
-      res.status(500).json({message: error.message });
-    });
-});
-
-
-//Get category Count
-router.get('/categories/count', async (req, res) => {
-  try {
-    const totalCategories = await Category.countDocuments();
-    res.json({ 
-      success: true,
-      count: totalCategories 
-    });
-  } catch (error) {
-    res.status(500).json({ 
-      success: false,
-      message: error.message
-    });
-  }
-});
 
 //post request to add item to a category
 router.post('/:id/items', authenticateToken, requireAdmin, (req, res) => {

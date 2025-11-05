@@ -9,7 +9,7 @@ const multer = require('multer');
 const app = express();
 mongoose.connect(`${process.env.CONNECTION_STRING}`, {
 })
-.then(() => console.log('MongoDB connected'))
+.then(() => console.log('MongoDB connected', process.env.CONNECTION_STRING?.split('@')[1]))
 .catch(err => console.error('MongoDB connection error:', err));
 
 const PORT = process.env.PORT;
